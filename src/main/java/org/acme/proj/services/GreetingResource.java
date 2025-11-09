@@ -1,4 +1,4 @@
-package org.acme.proj;
+package org.acme.proj.services;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
