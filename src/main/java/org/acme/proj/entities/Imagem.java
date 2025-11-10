@@ -1,11 +1,21 @@
 package org.acme.proj.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "images")
 public class Imagem extends BaseEntity{
+    @ManyToOne
+    @JoinColumn(name = "products_id")
+    private Produto produto;
     private String nomeArquivo;
     private String caminhoUrl;
+
+    public Imagem() {
+    }
 
     public String getNomeArquivo() {
         return nomeArquivo;
