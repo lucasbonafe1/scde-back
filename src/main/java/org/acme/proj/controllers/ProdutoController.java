@@ -4,6 +4,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.acme.proj.entities.Produto;
+import org.acme.proj.entities.dtos.ProdutoDTO;
 import org.acme.proj.services.ProdutoService;
 
 import java.util.List;
@@ -14,14 +15,14 @@ public class ProdutoController {
     ProdutoService produtoService;
 
     @POST
-    public Response create(Produto dto) {
+    public Response create(ProdutoDTO dto) {
         Produto produtoCriado = produtoService.create(dto);
         return Response.status(Response.Status.CREATED).entity(produtoCriado).build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, Produto dto) {
+    public Response update(@PathParam("id") Long id, ProdutoDTO dto) {
         Produto produtoAtualizado = produtoService.update(id, dto);
         return Response.ok(produtoAtualizado).build();
     }

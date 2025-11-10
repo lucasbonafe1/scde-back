@@ -4,6 +4,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.acme.proj.entities.Imagem;
+import org.acme.proj.entities.dtos.ImagemDTO;
 import org.acme.proj.services.ImagemService;
 
 import java.util.List;
@@ -14,14 +15,14 @@ public class ImagemController {
     ImagemService imagemService;
 
     @POST
-    public Response create(Imagem dto) {
+    public Response create(ImagemDTO dto) {
         Imagem imgCriada = imagemService.create(dto);
         return Response.status(Response.Status.CREATED).entity(imgCriada).build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, Imagem dto) {
+    public Response update(@PathParam("id") Long id, ImagemDTO dto) {
         Imagem imgAtualizada = imagemService.update(id, dto);
         return Response.ok(imgAtualizada).build();
     }

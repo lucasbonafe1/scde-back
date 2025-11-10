@@ -5,27 +5,39 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.acme.proj.entities.Imagem;
 import org.acme.proj.entities.Produto;
+import org.acme.proj.entities.dtos.ImagemDTO;
 import org.acme.proj.repositories.ImagemRepository;
+import org.acme.proj.repositories.ProdutoRepository;
 
 import java.util.List;
 
 @ApplicationScoped
-public class ImagemService implements BaseService<Imagem>{
+public class ImagemService implements BaseService<Imagem, ImagemDTO>{
     @Inject
-    ImagemRepository repository;
+    ImagemRepository imgRepository;
+
+    @Inject
+    ProdutoRepository produtoRepository;
 
     @Override
-    public Imagem create(Imagem img) {
-        repository.persist(img);
-        return img;
+    public Imagem create(ImagemDTO img) {
+        Produto produto = produtoRepository.findById(img.getProductId());
+
+        if (produto == null)
+            throw new NullPointerException("Produto não encontrado na base de dados.");
+        
+        Imagem imagem = new Imagem(produto, img.getNomeArquivo(), img.getCaminhoUrl());
+        imgRepository.persist(imagem);
+
+        return imagem;
     }
 
     @Override
-    public Imagem update(Long id, Imagem dto) {
+    public Imagem update(Long id, ImagemDTO dto) {
+        Imagem imagemExistente = imgRepository.findById(id);
 
-        Imagem imagemExistente = repository.findById(id);
         if (imagemExistente == null)
-            Log.errorf("Produto com id %i, não encontrado na base de dados.", id);
+            throw new NullPointerException("Imagem não encontrada na base de dados.");
 
         imagemExistente.setCaminhoUrl(dto.getCaminhoUrl());
         imagemExistente.setNomeArquivo(dto.getNomeArquivo());
@@ -33,19 +45,18 @@ public class ImagemService implements BaseService<Imagem>{
         return imagemExistente;
     }
 
-
     @Override
     public Imagem findById(Long id) {
-        return repository.findById(id);
+        return imgRepository.findById(id);
     }
 
     @Override
     public List<Imagem> findAll() {
-        return repository.findAll().list();
+        return imgRepository.findAll().list();
     }
 
     @Override
     public boolean delete(Long id) {
-        return repository.deleteById(id);
+        return imgRepository.deleteById(id);
     }
 }

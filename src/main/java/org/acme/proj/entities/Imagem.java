@@ -17,6 +17,12 @@ public class Imagem extends BaseEntity{
     public Imagem() {
     }
 
+    public Imagem(Produto produto, String nomeArquivo, String caminhoUrl) {
+        this.produto = produto;
+        this.nomeArquivo = nomeArquivo;
+        this.caminhoUrl = caminhoUrl;
+    }
+
     public String getNomeArquivo() {
         return nomeArquivo;
     }

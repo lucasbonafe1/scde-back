@@ -4,28 +4,32 @@ import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.acme.proj.entities.Produto;
+import org.acme.proj.entities.dtos.ProdutoDTO;
 import org.acme.proj.repositories.ProdutoRepository;
 
 import java.util.List;
 
 @ApplicationScoped
-public class ProdutoService implements BaseService<Produto>{
+public class ProdutoService implements BaseService<Produto, ProdutoDTO>{
     @Inject
     ProdutoRepository repository;
 
     @Override
-    public Produto create(Produto produto) {
+    public Produto create(ProdutoDTO dto) {
+        Produto produto = new Produto();
+        produto.save(dto);
+
         repository.persist(produto);
         return produto;
     }
 
     @Override
-    public Produto update(Long id, Produto produto) {
+    public Produto update(Long id, ProdutoDTO dto) {
         Produto produtoExistente = repository.findById(id);
         if (produtoExistente == null)
-            Log.errorf("Produto com id %i, não encontrado na base de dados.", id);
+            throw new NullPointerException("Produto não encontrado na base de dados.");
 
-        return produto.save(produto);
+        return produtoExistente.save(dto);
     }
 
     @Override

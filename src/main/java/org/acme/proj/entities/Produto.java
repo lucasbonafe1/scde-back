@@ -3,6 +3,7 @@ package org.acme.proj.entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import org.acme.proj.entities.dtos.ProdutoDTO;
 import org.acme.proj.enums.CondicaoEnum;
 
 import java.util.Date;
@@ -23,31 +24,31 @@ public class Produto extends BaseEntity{
     private Double altura;
     private Double largura;
     private Date dataDeValidade;
+    
     @OneToMany(mappedBy = "produto")
     private List<Imagem> imagens;
 
     public Produto() {
     }
 
-    public Produto save(Produto novosDados){
+    public Produto save(ProdutoDTO dto){
         Produto produto = new Produto();
 
-        produto.setNome(novosDados.getNome());
-        produto.setDescricao(novosDados.getDescricao());
-        produto.setPreco(novosDados.getPreco());
-        produto.setCodigoSKU(novosDados.getCodigoSKU());
-        produto.setUnidade(novosDados.getUnidade());
-        produto.setCondicao(novosDados.getCondicao());
+        produto.setNome(dto.getNome());
+        produto.setDescricao(dto.getDescricao());
+        produto.setPreco(dto.getPreco());
+        produto.setCodigoSKU(dto.getCodigoSKU());
+        produto.setUnidade(dto.getUnidade());
+        produto.setCondicao(dto.getCondicao());
 
-        produto.setMarca(novosDados.getMarca());
-        produto.setPeso(novosDados.getPeso());
-        produto.setAltura(novosDados.getAltura());
-        produto.setLargura(novosDados.getLargura());
-        produto.setDataDeValidade(novosDados.getDataDeValidade());
+        produto.setMarca(dto.getMarca());
+        produto.setPeso(dto.getPeso());
+        produto.setAltura(dto.getAltura());
+        produto.setLargura(dto.getLargura());
+        produto.setDataDeValidade(dto.getDataDeValidade());
 
         return produto;
     }
-
 
     public String getDescricao() {
         return descricao;
